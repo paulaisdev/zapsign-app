@@ -1,0 +1,116 @@
+<div class="navbar">
+  <mat-icon>gesture</mat-icon>
+</div>
+
+<div class="document-manager">
+  <div class="form-container">
+    <h1 class="section-title">Cadastre um documento para assinatura</h1>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="documentForm" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Empresa</mat-label>
+        <input
+          matInput
+          formControlName="company"
+          placeholder="ZapSign"
+          readonly
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nome do Documento</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="documentForm.get('name')?.hasError('required')">
+          O nome do documento é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <div formArrayName="signers">
+        <div
+          *ngFor="let signer of signers.controls; let i = index"
+          [formGroupName]="i"
+          class="signer-group"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Nome do Signatário</mat-label>
+            <input matInput formControlName="name" />
+            <mat-error *ngIf="signer.get('name')?.hasError('required')">
+              O nome do signatário é obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email do Signatário</mat-label>
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="signer.get('email')?.hasError('required')">
+              O email do signatário é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="signer.get('email')?.hasError('email')">
+              Informe um email válido.
+            </mat-error>
+          </mat-form-field>
+
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="addSigner()"
+            type="button"
+            *ngIf="i === signers.length - 1"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeSigner(i)"
+            type="button"
+            *ngIf="i > 0"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>URL do PDF</mat-label>
+        <input matInput formControlName="pdf_path" />
+        <mat-error *ngIf="documentForm.get('pdf_path')?.hasError('required')">
+          A URL do PDF é obrigatória.
+        </mat-error>
+        <mat-error *ngIf="documentForm.get('pdf_path')?.hasError('pattern')">
+          Informe uma URL válida.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-spinner *ngIf="loading" diameter="32"></mat-spinner>
+
+      <div>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loading"
+        >
+          Criar Documento
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="document-list">
+    <h1 class="section-title">Documentos Criados</h1>
+    <ul>
+      <li *ngFor="let doc of documents" class="document-item">
+        <mat-icon color="primary">description</mat-icon>
+        {{ doc.name }} - <a [href]="doc.pdf_path" target="_blank">Abrir PDF</a>
+      </li>
+    </ul>
+  </div>
+</div>
