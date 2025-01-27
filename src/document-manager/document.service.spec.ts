@@ -35,7 +35,7 @@ describe('DocumentService', () => {
       expect(documents).toEqual(mockDocuments);
     });
 
-    const req = httpMock.expectOne('http://localhost:8000/api/documents/');
+    const req = httpMock.expectOne('https://zapsign-backend-l4jq.onrender.com/api/documents/');
     expect(req.request.method).toBe('GET');
     req.flush(mockDocuments);
   });
