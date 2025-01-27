@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DocumentService {
-  private apiUrl = 'http://localhost:8000/api/documents/';
+  private apiUrl = 'https://zapsign-backend-l4jq.onrender.com/api/documents/';
 
   constructor(private http: HttpClient) {}
 

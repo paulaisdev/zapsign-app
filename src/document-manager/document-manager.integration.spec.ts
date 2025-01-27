@@ -31,7 +31,7 @@ describe('Integration: DocumentManagerComponent with Backend', () => {
       expect(documents.length).toBe(2);
     });
 
-    const req = httpMock.expectOne('http://localhost:8000/api/documents/');
+    const req = httpMock.expectOne('https://zapsign-backend-l4jq.onrender.com/api/documents/');
     expect(req.request.method).toBe('GET');
     req.flush(mockDocuments);
   });
@@ -47,7 +47,7 @@ describe('Integration: DocumentManagerComponent with Backend', () => {
       expect(response).toEqual(newDocument);
     });
 
-    const req = httpMock.expectOne('http://localhost:8000/api/documents/');
+    const req = httpMock.expectOne('https://zapsign-backend-l4jq.onrender.com/api/documents/');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(newDocument);
     req.flush(newDocument);
